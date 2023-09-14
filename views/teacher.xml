@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="student_teacher_data" model="ir.ui.view">
+        <field name="name">teacher.profile</field>
+        <field name="model">teacher.profile</field>
+        <field name="arch" type="xml">
+            <form >
+                <sheet>
+                    <group>
+                        <label for="teacher"/>
+                        <field name="teacher" />
+                        <label for="class_name"/>
+                        <field name="class_name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="student_teacher_tree_data" model="ir.ui.view">
+        <field name="name">teacher.profile</field>
+        <field name="model">teacher.profile</field>
+        <field name="arch" type="xml">
+            <tree delete="false">
+                <field name="teacher" />
+                <field name="class_name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record
+        id="action_teacher_profile" model="ir.actions.act_window">
+        <field name="name">Teacher</field>
+        <field name="res_model">teacher.profile</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

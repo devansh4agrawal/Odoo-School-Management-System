@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="email_template_student" model="mail.template">
+            <field name="name">Student Confirmation Email</field>
+            <field name="model_id" ref="school.model_students_profile" />
+            <field name="email_from">{{ user.email_formatted}}</field>
+            <field name="subject">Admission Confirmation, {{object.name}} - {{object.standard}}
+                standard.</field>
+            <field name="email_to">{{ object.parents_email }}</field>
+            <!-- <field name="partner_to"></field> -->
+            <field name="description">Sent for the Admission Confirmation.</field>
+            <field name="body_html" type="html">
+                <p>
+                    <h4>
+                        <b>
+                            <i>Congratulations <t t-out="object.father_name" />,</i>
+                        </b>
+                    </h4><br />
+                    <h5>Your ward admission application is accepted and admission is confirmed. Kindly,
+                    check the details,</h5><br /><br/>
+                    <h5>
+                        <b>Name: </b>
+                        <i>
+                            <t t-out="object.name" />
+                        </i>
+                        <br />
+                        <b>Enrollment Number: </b>
+                        <i>
+                            <t t-out="object.enrollment_no" />
+                        </i>
+                        <br />
+                        <b>Standard: </b>
+                        <i>
+                            <t t-out="object.standard" />
+                        </i>
+                        <br />
+                        <b>Date Of Birth: </b>
+                        <i>
+                            <t t-out="object.date_of_birth" />
+                        </i>
+                        <br />
+                        <b>Phone Number: </b>
+                        <i>
+                            <t t-out="object.phone" />
+                        </i>
+                        <br />
+                        <b>Contact Person: </b>
+                        <i>
+                            <t t-out="object.teacher.teacher" />
+                        </i>
+                    </h5><br />
+                    <br />
+                    For any query, kindly call 1234567890 </p>
+            </field>
+            <field name="report_template" ref="action_student_report_pdf" />
+            <field name="report_name">{{ object.name }}_{{ object.enrollment_no }}</field>
+        </record>
+    </data>
+</odoo>

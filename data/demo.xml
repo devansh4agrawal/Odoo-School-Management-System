@@ -1,0 +1,32 @@
+<!-- <?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="demo_student1" model="students.profile">
+            <field name="name">Dummy Name 1</field>
+            <field name="gender">Female</field>
+            <field name="standard">12</field>
+            <field name="student_stream">Science</field>
+            <field name="division">A</field>
+            <field name="enrollment_no">ENR00001</field>
+            <field name="date_of_birth">2000-01-01</field>
+            <field name="age">23</field>
+            <field name="phone">1232565489</field>
+            <field name="parents_phone">1232565489</field>
+            <field name="admission_status">Cancelled</field>
+            <field name="student_fee">No</field>
+        </record>
+        <record id="demo_student2" model="students.profile">
+            <field name="name">Dummy Name 2</field>
+            <field name="gender">Male</field>
+            <field name="standard">12</field>
+            <field name="student_stream">Science</field>
+            <field name="division">A</field>
+            <field name="enrollment_no">ENR00002</field>
+            <field name="date_of_birth">2000-01-01</field>
+            <field name="age">23</field>
+            <field name="phone">9856321254</field>
+            <field name="admission_status">Cancelled</field>
+            <field name="student_fee">No</field>
+        </record>
+    </data>
+</odoo> -->

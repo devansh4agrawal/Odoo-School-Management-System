@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="report_invoice">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <strong>
+                        <h4 class="text-center p-4 mt-4" t-field="o.school_abc"></h4>
+                        <h4 class="text-center p-4 mt-4">Registration Form</h4>
+                    </strong>
+                    <hr />
+                    <div class="page">
+                        <div class="d-flex justify-content-around">
+                            <b>Fee Paid: </b>
+                            <span t-if="o.student_fee == 'Paid'">
+                                <span style="color:green;" t-field="o.student_fee" />
+                            </span>
+                            <span t-if="not o.student_fee == 'Paid'">
+                                <span style="color:red;" t-field="o.student_fee" />
+                            </span>
+                            <br />
+                            <br />
+                            <b>Admission Status: </b>
+                            <span t-if="o.admission_status == 'Confirmed'">
+                                <span style="color:green;" t-field="o.admission_status" />
+                            </span>
+                            <span t-if="o.admission_status == 'Cancelled'">
+                                <span style="color:red;" t-field="o.student_fee" />
+                            </span>
+                            <span t-if="o.admission_status == 'In Process'">
+                                <span style="color:blue;" t-field="o.admission_status" />
+                            </span>
+                            <br />
+                            <br />
+                            <hr />
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-6">
+                                <p>
+                                    <b>Name:</b>
+                                    <span t-field="o.name" />
+                                </p>
+                                <p>
+                                    <b>Enrollment Number:</b>
+                                    <span t-field="o.enrollment_no" />
+                                </p>
+                                <p>
+                                    <b>Standard:</b>
+                                    <span t-field="o.standard" />
+                                    <span t-field="o.division" />
+                                </p>
+                                <p>
+                                    <b>Roll Number:</b>
+                                    <span t-field="o.roll_no" />
+                                </p>
+                                <p>
+                                    <b>Class Teacher:</b>
+                                    <span t-field="o.teacher" />
+                                </p>
+                                <br />
+                            </div>
+                            <div class="col-6">
+                                <p>
+                                    <b>Phone Number:</b>
+                                    <span t-field="o.phone" />
+                                </p>
+                                <p>
+                                    <b>Emergency Number:</b>
+                                    <span t-field="o.parents_phone" />
+                                </p>
+                                <p>
+                                    <b>Date of Birth:</b>
+                                    <span t-field="o.date_of_birth" />
+                                    <br />
+                                    <b> Age: </b>
+                                    <span t-field="o.age">yrs.</span>
+                                </p>
+                                <p>
+                                    <b>Address:</b>
+                                    <span t-field="o.address_line1" />, <span
+                                        t-field="o.address_line2" />, <br />
+                                    <span
+                                        t-field="o.city" /> , <span t-field="o.state" /> , <span
+                                        t-field="o.country" />
+                                </p>
+
+                            </div>
+                        </div>
+                        <hr />
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <record id="paper_format_student" model="report.paperformat">
+        <field name="name">{{o.name}}</field>
+        <field name="default" eval="True" />
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">3</field>
+        <field name="margin_bottom">3</field>
+        <field name="margin_left">3</field>
+        <field name="margin_right">3</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">5</field>
+        <field name="dpi">80</field>
+    </record>
+
+    <record id="action_student_report_pdf" model="ir.actions.report">
+        <field name="name">Report</field>
+        <field name="model">students.profile</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">school.report_invoice</field>
+        <field name="report_file">school.report_invoice</field>
+        <field name="binding_model_id" ref="school.model_students_profile" />
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="students_status_wizard_view" model="ir.ui.view">
+        <field name="name">Students</field>
+        <field name="model">students.admission.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="enrollment_number"
+                        domain="['&amp;',('admission_status','=','In Process'),('student_fee','=','Paid')]"
+                        placeholder="Search Enrollment Number" />
+                    <field name="admission_status" placeholder="Status" />
+                </group>
+                <hr/>
+                <span style="color:red">Only those students would appear who have Paid the fee and have status "In-Process".</span> <br/>
+                <footer>
+                    <button name="set_student_status" string="Admission Status"
+                        class="oe_right oe_highlight" type="object" />
+                    <button string="Cancel" special="cancel" class="oe_right" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

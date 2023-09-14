@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="student_standard_data" model="ir.ui.view">
+        <field name="name">standard.profile</field>
+        <field name="model">standard.profile</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="standards" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="student_teacher_data" model="ir.ui.view">
+        <field name="name">standard.profile</field>
+        <field name="model">standard.profile</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="standards" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record
+        id="action_standard_profile" model="ir.actions.act_window">
+        <field name="name">Standard</field>
+        <field name="res_model">standard.profile</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

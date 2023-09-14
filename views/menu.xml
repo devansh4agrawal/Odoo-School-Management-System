@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="school_management_root_menu" name="School Management" />
+
+    <!-- Main Menu  -->
+
+    <menuitem
+        id="students_root_menu" name="Register Student"
+        parent="school_management_root_menu"
+        action="action_students_profile" />
+
+    <menuitem id="teacher_sub_menu" name="Teacher"
+        parent="school_management_root_menu"
+        action="action_teacher_profile" />
+
+    <!-- Stream Menu -->
+
+    <menuitem id="stream_sub_menu" name="Streams"
+        parent="school_management_root_menu" />
+
+    <menuitem id="science_sub_menu" name="Science"
+        parent="stream_sub_menu"
+        action="action_science" />
+
+    <menuitem id="commerce_sub_menu" name="Commerce"
+        parent="stream_sub_menu"
+        action="action_commerce" />
+
+    <menuitem id="arts_sub_menu" name="Arts"
+        parent="stream_sub_menu"
+        action="action_arts" />
+
+    <!-- <menuitem id="standard_sub_menu" name="Standard"
+        parent="school_management_root_menu"
+        action="action_standard_profile" /> -->
+
+    <!-- Lab Menu -->
+
+    <menuitem id="lab_sub_menu" name="Labs"
+        parent="school_management_root_menu"
+    />
+    <menuitem id="labs_sub_menu" name="Labs Available"
+        parent="lab_sub_menu" action="action_labs_profile"
+    />
+    <menuitem id="computer_lab_sub_menu" name="Computer Lab"
+        parent="lab_sub_menu"
+        action="action_computer_lab" />
+
+    <menuitem id="science_lab_sub_menu" name="Science Lab"
+        parent="lab_sub_menu"
+        action="action_science_lab" />
+
+    <menuitem id="physics_lab_sub_menu" name="Physics Lab"
+        parent="lab_sub_menu"
+        action="action_physics_lab" />
+
+    <menuitem id="chemistry_lab_sub_menu" name="Chemistry Lab"
+        parent="lab_sub_menu"
+        action="action_chemistry_lab" />
+
+    <!-- Wizard Menu -->
+
+    <menuitem id="wizard_sub_menu" name="Wizards"
+        parent="school_management_root_menu" />
+
+    <menuitem id="fee_status_menu" name="Fee Status"
+        parent="wizard_sub_menu"
+        action="action_student_wizard" />
+
+    <menuitem id="admission_status_menu" name="Admission Status"
+        parent="wizard_sub_menu"
+        action="action_student_status_wizard" />
+
+
+    <!-- <menuitem id="school_config_settings_menu"
+        name="Config Settings"
+        action="school_config_settings_action"
+        parent="school_management_root_menu"
+        groups="base.group_system" /> -->
+
+    <menuitem name="Owl Component" id="school_root_menu" 
+        parent="school_management_root_menu"
+        action="my_client_action" />
+
+</odoo>

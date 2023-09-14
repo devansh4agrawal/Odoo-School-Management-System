@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+relation_profile,relation.profile,model_relation_profile,,1,1,1,1
+students_profile,students.profile,model_students_profile,,1,1,1,1
+teacher_profile,teacher.profile,model_teacher_profile,,1,1,1,1
+standard_profile,standard.profile,model_standard_profile,,1,1,1,1
+fees_profile,fees.profile,model_fees_profile,,1,1,1,1
+labs_profile,labs.profile,model_labs_profile,,1,1,1,1
+students_wizard,students.wizard,model_students_wizard,,1,1,1,1
+students_admission_wizard,students.admission.wizard,model_students_admission_wizard,,1,1,1,1
+students_result,students.result,model_students_result,,1,1,1,1

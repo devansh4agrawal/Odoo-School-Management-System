@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="student_labs_data" model="ir.ui.view">
+        <field name="name">labs.profile</field>
+        <field name="model">labs.profile</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="labs" />
+                <field name="lab_id" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="student_labs_form_data" model="ir.ui.view">
+        <field name="name">labs.profile</field>
+        <field name="model">labs.profile</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="labs" placeholder="Select Lab" />
+                    <field name="lab_id"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="lab_filter" model="ir.ui.view">
+        <field name="name">labs.profile</field>
+        <field name="model">labs.profile</field>
+        <field name="arch" type="xml">
+            <search string="Search">
+                <filter string="Labs to Student" name="labs"
+                    context="{'group_by':'labs'}" />
+
+                <filter string="Student to Labs" name="labs"
+                    context="{'group_by':'lab_id'}" />
+            </search>
+        </field>
+    </record>
+
+    <record
+        id="action_labs_profile" model="ir.actions.act_window">
+        <field name="name">Labs</field>
+        <field name="res_model">labs.profile</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

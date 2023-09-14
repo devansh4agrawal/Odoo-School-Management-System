@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Tree View for Register Student -->
+
+    <record id="students_data" model="ir.ui.view">
+        <field name="name">students.profile</field>
+        <field name="model">students.profile</field>
+        <field name="arch" type="xml">
+            <tree expand="1" delete="false" default_order="id desc">
+                <!-- <field name="student_profile_image" widget = "image" /> -->
+                <field name="enrollment_no" />
+                <field name="receipt_number" />
+                <field name="student_result" widget="badge"
+                    decoration-success="student_result == 'Pass'"
+                    decoration-danger="student_result == 'Fail'" optional="hide" />
+                <field name="name" />
+                <field name="standard" />
+                <field name="division" />
+                <field name="date_of_birth" />
+                <field name="gender" optional="hide" />
+                <field name="phone" />
+                <field name="teacher" optional="hide" />
+                <field name="total_labs" widget="many2many_tags" />
+                <field name="age" />
+                <field name="city" optional="hide" />
+                <field name="state" optional="hide" />
+                <field name="country" optional="hide" />
+                <field name="admission_status" widget="badge"
+                    decoration-success="admission_status == 'Confirmed'"
+                    decoration-danger="admission_status == 'Cancelled'"
+                    decoration-info="admission_status == 'In Process'"
+                    decoration-muted="admission_status =='Croned'" />
+                <field name="create_date" readonly="1" optional="hide" />
+                <field name="create_uid" readonly="1" optional="hide" />
+                <field name="id" readonly="1" optional="hide" />
+                <field name="student_fee" widget="badge" decoration-success="student_fee == 'Paid'"
+                    decoration-danger="student_fee == 'Unpaid'" />
+                <button type="object" string="Delete" name="unlink" class="oe_highlight" />
+                <button name="action_psql" string="New" type="object"
+                    class="oe_highlight" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- kanban View -->
+
+    <record id="student_kanban_view" model="ir.ui.view">
+        <field name="name">students.profile</field>
+        <field name="model">students.profile</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="admission_status" on_create="quick_create"
+                quick_create_view="student.students_register_view" records_draggable="True"
+                group_edit="True"
+                group_delete='false'>
+                <field name="id" />
+                <field name="student_profile_image" />
+                <field name="enrollment_no" />
+                <field name="name" />
+                <field name="standard" />
+                <field name="division" />
+                <field name="phone" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="o_kanban_image">
+                                <img alt="Avatar"
+                                    t-att-src="kanban_image('students.profile', 'student_profile_image',record.id.raw_value)" />
+                            </div>
+                            <div class="oe_kanban_details">
+                                <ul>
+                                    <div>
+                                        <li>Enrollment No: <strong>
+                                                <field name="enrollment_no" />
+                                            </strong></li>
+                                        <li>Admission Status: <strong>
+                                                <field name="admission_status" />
+                                            </strong></li>
+                                    </div>
+                                    <div style="display:flex; justify-content: space-between;">
+                                        <li>Name: <field name="name" /></li>
+                                        <li>Standard: <field name="standard" /></li>
+                                    </div>
+                                    <div style="display:flex; justify-content: space-between;">
+                                        <li>Roll Number: <field name="roll_no" /></li>
+                                        <li>Age: <field name="age" /></li>
+                                    </div>
+                                </ul>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_student_wizard">
+        <field name="name">My Action</field>
+        <field name="res_model">students.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+
+    <record model="ir.actions.act_window" id="action_student_status_wizard">
+        <field name="name">Student Admission Status</field>
+        <field name="res_model">students.admission.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_student_result_wizard">
+        <field name="name">Student Result</field>
+        <field name="res_model">students.result</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Graph View for Student -->
+
+    <record model="ir.ui.view" id="view_students">
+        <field name="name">students.profile</field>
+        <field name="model">students.profile</field>
+        <field name="type">graph</field>
+        <field name="arch" type="xml">
+            <graph string="Student per Class" type="bar" stacked="True" disable_linking="True"
+                sample="1">
+                <field name="standard" type="row" />
+                <field name="name" />
+            </graph>
+        </field>
+    </record>
+
+    <!-- Pivot View for Student -->
+
+    <record id="student_pivot_view" model="ir.ui.view">
+        <field name="name">students.profile</field>
+        <field name="model">students.profile</field>
+        <field name="arch" type="xml">
+            <pivot string="Students" display_quantity="True">
+                <field name="standard" type="col" />
+                <field name="student_fee" type="row" />
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Form View for Register Student -->
+
+    <record id="students_register_view" model="ir.ui.view">
+        <field name="name">students.profile</field>
+        <field name="model">students.profile</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_send_email" string="Send Email" type="object"
+                        class="oe_highlight mr4"
+                        attrs="{'invisible':['|',('admission_status','=','Cancelled'),('admission_status','=','In Process')]}" />
+
+                    <button name="open_new" string="Teacher" type="object"
+                        class="oe_highlight mr4" />
+
+                    <button name="%(action_student_wizard)d" string="Set Fee Status"
+                        type="action" class="oe_highlight mr4" />
+
+                    <button name="%(action_student_status_wizard)d"
+                        string="Set Admission Status"
+                        type="action" class="oe_highlight mr4" />
+
+                    <button name="%(action_student_result_wizard)d"
+                        string="Set Result"
+                        type="action" class="oe_highlight" />
+                </header>
+                <sheet>
+                    <div class="d-flex justify-content-between">
+                        <p class="text-start" style="font-size: 15px; color: Red;">
+                            <field name="form" />
+                        </p>
+                        <p class="text-end">
+                            <strong>
+                                <span>
+                                    <field name="date" readonly="1" />
+                                </span>
+                            </strong>
+                        </p>
+                    </div>
+
+                    <!-- <p id="demo"></p>
+                    <script>
+                    const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
+                    const d = new Date();
+                    let day = days[d.getDay()];
+                    document.getElementById("demo").innerHTML = day;
+                    </script> -->
+
+                    <div class="text-center">
+                        <h2>
+                            <field name="school_abc" />
+                        </h2>
+                        <hr style="color: black;" />
+                    </div>
+                    <field name="student_profile_image" class="oe_avatar" widget="image" />
+
+                    <div style="border:1.5px solid red; width:35%;" class="text-center">
+                        <p style="font-weight:500; padding:0; margin:0; font-size: 16px"> Enrollment
+                            Number:<field name="enrollment_no" readonly="1" force_save="1" />
+                        </p>
+                    </div>
+                    <p style="margin-top: 10px; font-size: 14px; margin-bottom: 0px">
+                        <strong>
+                            <span>Admission Status - <field name="admission_status" force_save="1" /></span>
+                        </strong>
+                    </p>
+                    <!-- <br /> -->
+                    <div class="d-flex justify-content-between" style="width:80%; color: green;">
+                        <strong> Status: <field name="student_fee" />
+                        </strong>
+                        <strong>Mode: <field name="fee_mode" readonly="1" />
+                        </strong>
+                        <strong>Receipt No.: <field name="receipt_number" readonly="1" />
+                        </strong>
+                    </div>
+                    <!-- <br /> -->
+                    <hr />
+
+                    <group>
+                        <group>
+                            <field name="name" placeholder="Enter your name" />
+                            <field name="gender" placeholder="Select" widget="selection" />
+                            <label for="standard" />
+                            <div class="o_row">
+                                <field name="standard" placeholder="Enter Standard" />
+                                <field name="division" placeholder="Division" />
+                            </div>
+                            <field name="student_stream" placeholder="Select Stream"
+                                attrs="{'invisible':[('standard' ,'&lt;',11)],'required':[('standard','&gt;', 10)]}" />
+                            <field name="teacher" readonly="1" force_save="1"
+                                placeholder="Assigned Teacher" />
+                            <field name="roll_no" placeholder="Enter Roll Number" widget="char" />
+                            <field name="phone" placeholder="Enter Phone Number" />
+                        </group>
+                        <group>
+                            <field name="student_email" placeholder="Student Email" />
+                            <label for="date_of_birth"></label>
+                            <div class="d-flex justify-content-between">
+                                <field name="date_of_birth" placeholder="Date of Birth" />
+                                <field name="age" readonly="1" force_save="1" placeholder="Age" />
+                            </div>
+
+                            <field name="address_line1" placeholder="Enter Address" />
+                            <field name="address_line2" placeholder="Locality" />
+                            <label for="country" />
+                            <div class="o_row">
+                                <field name="country" placeholder="Select Country" />
+                                <field name="state" placeholder="Select State" />
+                            </div>
+                            <field name="city" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Family Details">
+                            <group>
+                                <group>
+                                    <field name="father_name" />
+                                    <field name="mother_name" />
+                                    <field name="guardian_name" />
+                                    <label for="parents_yearly_income" />
+                                    <div class="o_row">
+                                        <field name="currency_id" />
+                                        <field name="parents_yearly_income" widget="monetary"
+                                            options="{'currency_field': 'currency_id'}" />
+                                    </div>
+                                </group>
+                                <group>
+                                    <field name="parents_phone" />
+                                    <field name="parents_email" />
+                                    <field name="relation" />
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Previous School Details">
+                            <group>
+                                <group>
+                                    <field name="previous_school_name" />
+                                    <field name="previous_school_admission_date" />
+                                </group>
+                                <group>
+                                    <field name="previous_school_enrollment_no" />
+                                    <field name="previous_school_leave_date" />
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Fee Details">
+                            <group>
+                                <group>
+                                    <field name="fee_per_month" />
+                                    <field name="total_labs" />
+                                </group>
+                                <group>
+                                    <label for="transportation" />
+                                    <div class="o_row">
+                                        <field name="transportation" placeholder="Select" />
+                                        <field name="distance" placeholder="Enter Distance (KM)"
+                                            widget="char"
+                                            attrs="{'invisible':[('transportation' ,'=','No')]}" />
+                                    </div>
+                                    <field name="total_lab_fee" />
+                                    <field name="total_fee" />
+                                    <field name="total_fee_quater" />
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Student Search View (Streamwise and Class 10)-->
+    <!-- Student Groupby Birth Month-->
+
+    <record id="filter" model="ir.ui.view">
+        <field name="name">students.profile</field>
+        <field name="model">students.profile</field>
+        <field name="arch" type="xml">
+            <search string="Search">
+
+                <field name="name" />
+                <field name="enrollment_no" />
+                <field name="standard" />
+                <field name="admission_status" />
+                <!-- <field name="enrollment_no" /> -->
+
+                <!-- Filteration -->
+
+                <filter name="ten_standard_students" string="Tenth"
+                    domain="[('standard','=',10)]" />
+                <filter name="science_stream_students" string="Science"
+                    domain="[('student_stream','=','science')]" />
+                <filter name="commerce_stream_students" string="Commerce"
+                    domain="[('student_stream','=','commerce')]" />
+                <filter name="arts_stream_students" string="Arts"
+                    domain="[('student_stream','=','arts')]" />
+
+                <!-- Filter - Admission Status based -->
+
+                <filter name="confirmed_status" string="Confirmed"
+                    domain="[('admission_status','=','confirmed')]" />
+                <filter name="cancelled_status" string="Cancelled"
+                    domain="[('admission_status','=','cancelled')]" />
+
+                <!-- Filter - Lab based -->
+
+                <filter name="computer_lab_students" string="Computer"
+                    domain="[('total_labs','=','Computer')]" />
+                <filter name="science_lab_students" string="Science "
+                    domain="[('total_labs','=','Science')]" />
+                <filter name="physics_lab_students" string="Physics "
+                    domain="[('total_labs','=','Physics')]" />
+                <filter name="chemistry_lab_students" string="Chemistry "
+                    domain="[('total_labs','=','Chemistry')]" />
+
+                <!-- Group By -->
+
+                <filter string="Birthday Month" name="birth_month"
+                    context="{'group_by':'birthday_month'}" />
+                <filter string="Class" name="classwise"
+                    context="{'group_by':'standard'}" />
+                <filter string="Admission Status" name="status"
+                    context="{'group_by': 'admission_status'}" />
+                <filter string="Fee Status" name="fee_status"
+                    context="{'group_by':'student_fee'}" />
+                <filter string="Labs with Class" name="lab_with_class"
+                    context="{'group_by':'total_labs'}" />
+            </search>
+        </field>
+    </record>
+
+    <record id="enrollment_sequence" model="ir.sequence">
+        <field name="name">Enrollment</field>
+        <field name="code">enrollment_sequence</field>
+        <field name="implementation">no_gap</field>
+        <field name="prefix">SM/%(year)s/ENR </field>
+        <field name="padding">5</field>
+    </record>
+
+    <record id="action_set_admission_confirm" model="ir.actions.server">
+        <field name="name">Admission - Confirmed</field>
+        <field name="model_id" ref="model_students_profile" />
+        <field name="state">code</field>
+    </record>
+
+    <record id="action_set_admission_cancel" model="ir.actions.server">
+        <field name="name">Admission - Cancelled</field>
+        <field name="model_id" ref="model_students_profile" />
+        <field name="state">code</field>
+    </record>
+
+    <!-- Actions -->
+    <!-- Master Page Action -->
+
+    <record id="action_students_profile" model="ir.actions.act_window">
+        <field name="name">Student Information View</field>
+        <field name="res_model">students.profile</field>
+        <field name="context">{'search_default_ten_standard_students' : 1}</field>
+        <field name="view_mode">tree,form,kanban,graph,pivot</field>
+    </record>
+
+    <!-- Science Stream Action -->
+
+    <record id="action_science" model="ir.actions.act_window">
+        <field name="name">Science Student</field>
+        <field name="res_model">students.profile</field>
+        <field name="context">{'search_default_science_stream_students' : 1}</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <!-- Commerce Stream Action -->
+
+    <record id="action_commerce" model="ir.actions.act_window">
+        <field name="name">Commerce Student</field>
+        <field name="res_model">students.profile</field>
+        <field name="context">{'search_default_commerce_stream_students' : 1}</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <!-- Arts Stream Action -->
+
+    <record id="action_arts" model="ir.actions.act_window">
+        <field name="name">Arts Student</field>
+        <field name="res_model">students.profile</field>
+        <field name="context">{'search_default_arts_stream_students' : 1}</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <record id="action_computer_lab" model="ir.actions.act_window">
+        <field name="name">Computer Lab Student</field>
+        <field name="res_model">students.profile</field>
+        <field name="context">{'search_default_computer_lab_students' : 1}</field>
+        <!-- <field name="context">{'search_default_lab_with_class' : 1}</field> -->
+        <!-- <field name="context">{'group_by':['student_fee','admission_status']}</field> -->
+        <field name="view_mode">tree</field>
+    </record>
+
+    <record id="action_science_lab" model="ir.actions.act_window">
+        <field name="name">Science Lab Student</field>
+        <field name="res_model">students.profile</field>
+        <field name="context">{'search_default_science_lab_students' : 1}</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <record id="action_physics_lab" model="ir.actions.act_window">
+        <field name="name">Physics Lab Student</field>
+        <field name="res_model">students.profile</field>
+        <field name="context">{'search_default_physics_lab_students' : 1}</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <record id="action_chemistry_lab" model="ir.actions.act_window">
+        <field name="name">Chemistry Lab Student</field>
+        <field name="res_model">students.profile</field>
+        <field name="context">{'search_default_chemistry_lab_students' : 1}</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <record model="ir.actions.client" id="my_client_action">
+        <field name="name">My Client Action</field>
+        <field name="tag">school.my_client_action</field>
+    </record>
+
+    <record id="my_client_action" model="ir.actions.client">
+        <field name="name">Action Owl</field>
+        <field name="tag">action_component</field>
+        <field name="target">main</field>
+    </record>
+</odoo>

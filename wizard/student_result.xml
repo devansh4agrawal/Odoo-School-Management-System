@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="students_result_view" model="ir.ui.view">
+        <field name="name">Students Result</field>
+        <field name="model">students.result</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="enrollment_number"
+                        domain="['&amp;','&amp;',('student_fee','=','Paid'),('student_result','=',False),'|',('admission_status','=','Confirmed'),('admission_status','=','In Process')]" />
+                    <field name="student_result" placeholder="Student Result" />
+                </group>
+                <footer>
+                    <button name="set_student_result" string="Save" class="oe_right oe_highlight"
+                        type="object" />
+                    <button string="Cancel" special="cancel" class="oe_right" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

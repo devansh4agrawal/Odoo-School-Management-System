@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="students_wizard_view" model="ir.ui.view">
+        <field name="name">Students</field>
+        <field name="model">students.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="receipt"/>
+                    <field name="enrollment_number"
+                        placeholder="Student Enrollment Number" domain="[('student_fee','=','Unpaid')]"/>
+                    <field name="payment_mode" placeholder="Select payment mode" />
+                    <field name="payment_mode_cheque"
+                        attrs="{'invisible':[('payment_mode' ,'!=','cheque')],'required':[('payment_mode','=', 'cheque')]}" />
+                    <field name="payment_mode_online"
+                        attrs="{'invisible':[('payment_mode' ,'!=','online')],'required':[('payment_mode','=', 'online')]}" />
+                    <field name="student_fee" force_save="1" />
+                </group>
+                <hr />
+                <span style="color:red">Only those students would appear who haven't Paid the fees.</span>
+                <br />
+                <footer>
+                    <button name="set_student_level" string="Fee Paid" class="oe_right oe_highlight"
+                        type="object" />
+                    <button string="Cancel" special="cancel" class="oe_right" />
+                    <button string="Print Receipt" class="oe_left"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="receipt_sequence" model="ir.sequence">
+        <field name="name">Receipt</field>
+        <field name="code">receipt_sequence</field>
+        <field name="implementation">no_gap</field>
+        <field name="prefix">SM/%(year)s/</field>
+        <!-- <field name="suffix">/%(month)s</field> -->
+        <field name="padding">4</field>
+    </record>
+</odoo>

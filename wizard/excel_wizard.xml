@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_excel_report" model="ir.ui.view">
+        <field name="name">Excel Report</field>
+        <field name="model">excel.report</field>
+        <field name="arch" type="xml">
+            <form string="Choose your details">
+                <group>
+                    <!-- <group>
+                        <field name="sales_person" style="width: 40%%" />
+                    </group> -->
+                    <group>
+                        <field name="report_type" />
+                        <!-- <field name="end_date" /> -->
+                    </group>
+                </group>
+                <footer>
+                    <button name="generate_report" string="Print Report" type="object"
+                        class="oe_highlight" /> or <button string="Cancel" class="oe_link"
+                        special="cancel" groups="base.group_sale_manager" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- <record id="action_report_wizard_id" model="ir.actions.report">
+
+        <field name="name">Wizard Sample</field>
+        <field name="model">excel.report</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">view_excel_report</field>
+        <field name="report_file">school.view_excel_report</field>
+        <field name="print_report_name">Wizard Sample</field>
+    </record> -->
+
+    <!-- <?xml version="1.0" encoding="utf-8"?>
+<odoo> -->
+   <report
+       id="price_list_report"
+       model="excel.wizard"
+       string="Price List Report"
+       report_type="xlsx"
+       name="price_list_report.price_list_report"
+       file="Price List Report"
+       attachment_use="False"/>
+<!-- </odoo> -->
+</odoo>
