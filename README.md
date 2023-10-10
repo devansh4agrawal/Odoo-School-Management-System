@@ -3,7 +3,7 @@
 
 The School Management System is a comprehensive software solution developed using the Odoo framework. This system is designed to streamline and enhance various aspects of school administration and management. It offers a wide range of features and functionalities to facilitate the efficient operation of schools.
 
-Here's a description of the technical stack used in your School Management System project:
+Here's a description of the technical stack used in our School Management System project:
 Frontend:
 
 XML: XML is used for structuring and defining the user interface and views within the Odoo framework. 
